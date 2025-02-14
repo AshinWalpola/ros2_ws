@@ -1,0 +1,17 @@
+services:
+  ros2_jazzy:
+    build: .
+    container_name: ros2_jazzy
+    image: ros2_jazzy:latest
+    privileged: true  # Allows access to hardware resources
+    network_mode: "host"  # Required for ROS 2 nodes communication
+    environment:
+      - DISPLAY=${DISPLAY:-:0}  # Fallback to ":0" if DISPLAY is not set
+      - QT_X11_NO_MITSHM=1
+      - XDG_RUNTIME_DIR=/run/user/$(id -u)  # Needed for Wayland support
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix  # Required for GUI apps
+      - ./ros2_ws:/ros2_ws  # Mount workspace
+    stdin_open: true
+    tty: true
+    
